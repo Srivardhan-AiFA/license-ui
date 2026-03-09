@@ -9,7 +9,6 @@ type Page = "home" | "generate" | "upload";
 interface GenerateForm {
   customerName: string;
   max_servers: string;
-  grace_period: string;
   expiryDate: Dayjs | null;
 }
 
@@ -397,7 +396,6 @@ function GeneratePage() {
   const [form, setForm] = useState<GenerateForm>({
     customerName: "",
     max_servers: "",
-    grace_period: "",
     expiryDate: null,
   });
 
@@ -442,7 +440,6 @@ function GeneratePage() {
             customerName: form.customerName,
             max_servers: parseInt(form.max_servers, 10),
             expiryDate: form.expiryDate.toISOString(),
-            grace_period: parseInt(form.grace_period)
           }),
         }
       );
@@ -500,18 +497,6 @@ function GeneratePage() {
           type="number"
           placeholder="e.g. 5"
           value={form.max_servers}
-          onChange={handleChange}
-          min={1}
-        />
-
-        <label style={styles.label}>Grace Period (Days)</label>
-        <input
-          style={styles.input}
-          name="grace_period"
-          type="number"
-          max={15}
-          placeholder="e.g. 15"
-          value={form.grace_period}
           onChange={handleChange}
           min={1}
         />
@@ -705,7 +690,7 @@ export default function App() {
         input:focus, textarea:focus { border-color: #7e60cd !important; box-shadow: 0 0 0 3px rgba(126,96,205,0.12); }
       `}</style>
       <div style={styles.app}>
-        <Nav page={page} onHome={() => setPage("home")} />
+        <Nav page={page} onHome={() => setPage("upload")} />
         {page === "home" && <Landing onNavigate={setPage} />}
         {page === "generate" && <GeneratePage />}
         {page === "upload" && <UploadPage />}

@@ -431,7 +431,7 @@ function GeneratePage() {
 
     try {
       const res = await fetch(
-        "http://localhost:3000/api/generate-root-license",
+        "http://192.168.1.29:3000/api/generate-root-license",
         {
           method: "POST",
           headers: {
@@ -610,7 +610,7 @@ function UploadPage() {
     setLoading(true);
     setResult(null);
     try {
-      const res = await fetch("http://localhost:3000/api/admin/upload-license", {
+      const res = await fetch("http://192.168.1.29:3000/api/admin/upload-license", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ root_key: form.root_key.trim() }),

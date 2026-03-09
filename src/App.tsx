@@ -9,6 +9,7 @@ type Page = "home" | "generate" | "upload";
 interface GenerateForm {
   customerName: string;
   max_servers: string;
+  grace_period: string;
   expiryDate: Dayjs | null;
 }
 
@@ -396,6 +397,7 @@ function GeneratePage() {
   const [form, setForm] = useState<GenerateForm>({
     customerName: "",
     max_servers: "",
+    grace_period: "",
     expiryDate: null,
   });
 
@@ -430,7 +432,7 @@ function GeneratePage() {
 
     try {
       const res = await fetch(
-        "http://192.168.1.29:3000/api/generate-root-license",
+        "https://license-server-ix3y.onrender.com/api/generate-root-license",
         {
           method: "POST",
           headers: {
@@ -440,6 +442,7 @@ function GeneratePage() {
             customerName: form.customerName,
             max_servers: parseInt(form.max_servers, 10),
             expiryDate: form.expiryDate.toISOString(),
+            grace_period: parseInt(form.grace_period)
           }),
         }
       );
@@ -456,7 +459,7 @@ function GeneratePage() {
       }
     } catch (err) {
       setResult({
-        error: "Network error — is the server running on localhost:3000?",
+        error: "Network error",
       });
     } finally {
       setLoading(false);
@@ -497,6 +500,18 @@ function GeneratePage() {
           type="number"
           placeholder="e.g. 5"
           value={form.max_servers}
+          onChange={handleChange}
+          min={1}
+        />
+
+        <label style={styles.label}>Grace Period (Days)</label>
+        <input
+          style={styles.input}
+          name="grace_period"
+          type="number"
+          max={15}
+          placeholder="e.g. 15"
+          value={form.grace_period}
           onChange={handleChange}
           min={1}
         />
@@ -609,7 +624,7 @@ function UploadPage() {
     setLoading(true);
     setResult(null);
     try {
-      const res = await fetch("http://192.168.1.29:3000/api/admin/upload-license", {
+      const res = await fetch("https://license-server-ix3y.onrender.com/api/admin/upload-license", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ root_key: form.root_key.trim() }),

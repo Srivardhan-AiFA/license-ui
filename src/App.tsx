@@ -8,7 +8,7 @@ type Page = "home" | "generate" | "upload";
 
 interface GenerateForm {
   customerName: string;
-  max_seats: string;
+  max_servers: string;
   expiryDate: Dayjs | null;
 }
 
@@ -49,23 +49,12 @@ const styles: Record<string, React.CSSProperties> = {
     cursor: "pointer",
     userSelect: "none" as const,
   },
-  navLogoMark: {
-    width: 32,
-    height: 32,
-    borderRadius: 8,
-    background: PURPLE,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    color: "#fff",
-    fontWeight: 800,
-    fontSize: 16,
-  },
+
   navLogoText: {
     fontWeight: 700,
     fontSize: 17,
     letterSpacing: "-0.3px",
-    color: "#1a1a2e",
+    color: PURPLE,
   },
   navBack: {
     display: "flex",
@@ -74,7 +63,7 @@ const styles: Record<string, React.CSSProperties> = {
     cursor: "pointer",
     color: PURPLE,
     fontWeight: 600,
-    fontSize: 14,
+    fontSize: 12,
     border: "none",
     background: "none",
     padding: 0,
@@ -309,6 +298,15 @@ const styles: Record<string, React.CSSProperties> = {
     color: PURPLE,
     cursor: "pointer",
   },
+  logoimg: {
+    width: "70px",
+    height: "auto",
+    display: "block",
+  },
+  line: {
+    borderRight: "2px solid #ccc",
+    height: "25px"
+  }
 };
 
 // ─── Spinner ──────────────────────────────────────────────────────────────────
@@ -330,12 +328,13 @@ function Nav({ page, onHome }: { page: Page; onHome: () => void }) {
   return (
     <nav style={styles.nav}>
       <div style={styles.navLogo} onClick={onHome}>
-        <div style={styles.navLogoMark}>L</div>
-        <span style={styles.navLogoText}>LicenseKit</span>
+        <img src="https://platform.aiops-dev.aifalabs.com/images/Logo.44ea0da417e3439dd7a48ee10d73ffe7.svg" alt="AIFA" style={styles.logoimg} />
+        <span style={styles.line} />
+        <span style={styles.navLogoText}>AI OPS</span>
       </div>
       {page !== "home" && (
         <button style={styles.navBack} onClick={onHome}>
-          ← Back to Home
+          Back to Home
         </button>
       )}
     </nav>
@@ -396,7 +395,7 @@ type Result = {
 function GeneratePage() {
   const [form, setForm] = useState<GenerateForm>({
     customerName: "",
-    max_seats: "",
+    max_servers: "",
     expiryDate: null,
   });
 
@@ -421,7 +420,7 @@ function GeneratePage() {
   };
 
   const handleSubmit = async () => {
-    if (!form.customerName || !form.max_seats || !form.expiryDate) {
+    if (!form.customerName || !form.max_servers || !form.expiryDate) {
       setResult({ error: "All fields are required." });
       return;
     }
@@ -439,7 +438,7 @@ function GeneratePage() {
           },
           body: JSON.stringify({
             customerName: form.customerName,
-            max_seats: parseInt(form.max_seats, 10),
+            max_servers: parseInt(form.max_servers, 10),
             expiryDate: form.expiryDate.toISOString(),
           }),
         }
@@ -491,13 +490,13 @@ function GeneratePage() {
           onChange={handleChange}
         />
 
-        <label style={styles.label}>Max Seats</label>
+        <label style={styles.label}>Max servers</label>
         <input
           style={styles.input}
-          name="max_seats"
+          name="max_servers"
           type="number"
           placeholder="e.g. 5"
-          value={form.max_seats}
+          value={form.max_servers}
           onChange={handleChange}
           min={1}
         />
@@ -631,7 +630,7 @@ function UploadPage() {
         <h2 style={styles.cardTitle}>Upload Root Licence</h2>
         <p style={styles.cardSub}>
           Paste your signed JWT root licence key below to install it on the
-          server and activate seats.
+          server and activate servers.
         </p>
 
         <label style={styles.label}>Root Licence Key (JWT)</label>

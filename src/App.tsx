@@ -690,7 +690,7 @@ export default function App() {
         input:focus, textarea:focus { border-color: #7e60cd !important; box-shadow: 0 0 0 3px rgba(126,96,205,0.12); }
       `}</style>
       <div style={styles.app}>
-        <Nav page={page} onHome={() => setPage("upload")} />
+        <Nav page={page} onHome={() => setPage("home")} />
         {page === "home" && <Landing onNavigate={setPage} />}
         {page === "generate" && <GeneratePage />}
         {page === "upload" && <UploadPage />}
